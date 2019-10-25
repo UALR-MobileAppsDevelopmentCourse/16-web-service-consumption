@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Networking</string>
+    <string name="title_hint">Title</string>
+    <string name="author_hint">Author</string>
+    <string name="isbn_hint">ISBN</string>
+    <string name="summary_hint">Summary</string>
+    <string name="publisher_hint">Publisher</string>
+    <string name="save_btn_label">Save</string>
+    <string name="success_msg">New book successfully saved</string>
+</resources>
