@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.ualr.networking.R;
-import edu.ualr.networking.model.Recipe;
+import edu.ualr.networking.model.Book;
 
 /**
  * Created by irconde on 2019-10-25.
  */
-public class RecipesListAdapter extends RecyclerView.Adapter {
+public class BookListAdapter extends RecyclerView.Adapter {
 
-    private List<Recipe> mItems;
+    private List<Book> mItems;
 
-    public RecipesListAdapter(List<Recipe> items) {
+    public BookListAdapter(List<Book> items) {
         this.mItems = items;
     }
 
@@ -33,11 +33,13 @@ public class RecipesListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Recipe recipe = this.mItems.get(position);
+        Book book = this.mItems.get(position);
         RecipeViewHolder recipeViewHolder = (RecipeViewHolder) holder;
-        recipeViewHolder.ingredients.setText(recipe.getIngredientsDescription());
-        recipeViewHolder.title.setText(recipe.getName());
-        recipeViewHolder.steps.setText(recipe.getStepsDescription());
+        recipeViewHolder.author.setText(book.getAuthor());
+        recipeViewHolder.title.setText(book.getTitle());
+        recipeViewHolder.summary.setText(book.getSummary());
+        recipeViewHolder.isbn.setText(book.getIsbn());
+        recipeViewHolder.publisher.setText(book.getPublisher());
     }
 
     @Override
@@ -45,20 +47,22 @@ public class RecipesListAdapter extends RecyclerView.Adapter {
         return this.mItems.size();
     }
 
-    public void setItems (List<Recipe> items) {
+    public void setItems (List<Book> items) {
         this.mItems = items;
         notifyDataSetChanged();
     }
 
     private class RecipeViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView ingredients, steps, title;
+        public TextView title, author, summary, isbn, publisher;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.recipe_title);
-            ingredients = itemView.findViewById(R.id.ingredients_content);
-            steps = itemView.findViewById(R.id.steps_content);
+            title = itemView.findViewById(R.id.book_title);
+            author = itemView.findViewById(R.id.author);
+            summary = itemView.findViewById(R.id.summary);
+            isbn = itemView.findViewById(R.id.isbn);
+            publisher = itemView.findViewById(R.id.publisher);
         }
     }
 }

@@ -6,30 +6,32 @@
 
     <TextView
         style="@style/AppTheme.Title"
-        android:id="@+id/recipe_title"
+        android:id="@+id/book_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:text="Ingredients"
+        android:id="@+id/author"
         style="@style/AppTheme.Subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/ingredients_content"
+        android:id="@+id/summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        style="@style/AppTheme.Subtitle"
-        android:text="Steps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/steps_content"
+        android:id="@+id/publisher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/isbn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorPrimary" />
 
 </LinearLayout>
