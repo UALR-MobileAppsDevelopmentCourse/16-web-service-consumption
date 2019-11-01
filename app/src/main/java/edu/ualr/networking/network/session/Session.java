@@ -2,6 +2,7 @@ package edu.ualr.networking.network.session;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import edu.ualr.networking.NetworkApp;
 
@@ -9,6 +10,8 @@ import edu.ualr.networking.NetworkApp;
  * Created by irconde on 2019-10-26.
  */
 public class Session {
+
+    private static final String TAG = Session.class.getSimpleName();
 
     private static final String PREFS_KEY = "PREFS_KEY";
     private static final String AUTH_TOKEN_KEY = "AUTHTOKEN_KEY";
@@ -33,6 +36,7 @@ public class Session {
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
         this.prefs.edit().putString(AUTH_TOKEN_KEY, authToken).commit();
+        Log.d(TAG, String.format("New authorization token: %s", authToken));
     }
 
     public String getRefreshToken() {
