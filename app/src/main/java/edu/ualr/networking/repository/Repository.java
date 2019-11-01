@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import edu.ualr.networking.model.Recipe;
-import edu.ualr.networking.network.RetrofitModule;
+import edu.ualr.networking.model.Book;
+import edu.ualr.networking.network.WebServiceManager;
 import edu.ualr.networking.network.WebAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,36 +16,41 @@ import retrofit2.Response;
 /**
  * Created by irconde on 2019-10-25.
  */
+
+// TODO 10. We create a Repository class to provide just an abstraction for data access.
 public class Repository {
 
     private static final String TAG = Repository.class.getSimpleName();
-    private MutableLiveData<List<Recipe>> recipesListObservable = new MutableLiveData<>();
-    private WebAPI recipeApi;
+    // TODO 12. We add a LiveData member. It's used to inform the ViewModel when we receive data
+    //  from the server
+    private MutableLiveData<List<Book>> bookListObservable = new MutableLiveData<>();
+    // TODO 11. Reference to the Web API client
+    private WebAPI bookAPI;
 
+    // TODO 14. We define the constructor of the class. We get a reference to the Web API client
     public Repository() {
-        recipeApi = RetrofitModule.getRecipesService();
+        bookAPI = WebServiceManager.getService();
     }
 
+    // TODO 15. We define a method to allow other components of the app fetch data from the repository
     public void fetchData() {
-        List<Recipe> loadingList = null;
-        if (recipesListObservable.getValue()!=null){
-            loadingList=recipesListObservable.getValue();
-        } else {
-            getRecipesFromWeb();
-        }
+        // TODO 16. We define a method to fetch books data from web service
+        getBooksFromWeb();
     }
 
-    public MutableLiveData<List<Recipe>> getRecipesListObservable() {
-        return recipesListObservable;
+    // TODO 13. We define a get method for the bookListObservable member
+    public MutableLiveData<List<Book>> getBookListObservable() {
+        return bookListObservable;
     }
 
-    private void getRecipesFromWeb(){
-        Log.d(TAG, "getRecipesFromWeb");
-        recipeApi.getRecipesFromWeb().enqueue(new Callback<List<Recipe>>() {
+    // TODO 16. We define a method to fetch books data from web service. We update the
+    private void getBooksFromWeb(){
+        bookAPI.getBooksFromWeb().enqueue(new Callback<List<Book>>() {
             @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful()) {
-                    setRecipesListObservableData(response.body());
+                    // TODO 17. We update the list of books in case we receive a successful response
+                    setBooksListObservableData(response.body());
                 } else {
                     switch (response.code()) {
                         case 404:
@@ -61,7 +66,7 @@ public class Repository {
                 }
             }
             @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+            public void onFailure(Call<List<Book>> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });
@@ -69,12 +74,47 @@ public class Repository {
 
     /**
      * This method changes the observable's LiveData data without changing the status
-     * @param mRecipesList the data that need to be updated
+     * @param bookList the data that need to be updated
      */
-    private void setRecipesListObservableData(List<Recipe> mRecipesList) {
-        Log.d(TAG, "setRecipesListObservableData");
-        recipesListObservable.setValue(mRecipesList);
+    // TODO 17. We update the list of books in case we receive a successful response
+    private void setBooksListObservableData(List<Book> bookList) {
+        bookListObservable.setValue(bookList);
     }
 
+    // TODO 19. We update the list of books once we make sure the transaction has
+    //  been successful and we receive the resulting list of books.
+    private void addBooksToListObservableData(List<Book> bookList) {
+        List<Book> books = bookListObservable.getValue();
+        books.addAll(bookList);
+        bookListObservable.setValue(books);
+    }
 
+    // TODO 18. We define a method to send the web server a request to remotely add/save a new book.
+    public void saveData(Book book) {
+        bookAPI.saveBookInWeb(book).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                if (response.isSuccessful()) {
+                    // TODO 19. We update the list of books once we make sure the transaction has
+                    //  been successful and we receive the resulting list of books.
+                    addBooksToListObservableData(response.body());
+                } else {
+                    switch (response.code()) {
+                        case 404:
+                            Log.d(TAG, "not found");
+                            break;
+                        case 500:
+                            Log.d(TAG, "not logged in or server broken");
+                            break;
+                        default:
+                            Log.d(TAG, "unknown error");
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) { }
+        });
+    }
 }
