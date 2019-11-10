@@ -19,13 +19,7 @@ public class WebServiceManager {
     private final static String BASE_URL = "https://8a1edae8-ad30-4e4b-ac88-3989b1db77f6.app.jexia.com/";
     // TODO 28. Define a constant to hold the authentication token
     // Be careful this token expires
-    private final static String AUTH_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI4YTFlZ" +
-            "GFlOC1hZDMwLTRlNGItYWM4OC0zOTg5YjFkYjc3ZjYiLCJleHAiOjE1NzI2Mjc3NTYsImlhdCI6MTU3MjYyMDU1N" +
-            "iwiaXNzIjoiYmlmcm9zdCIsInN1YiI6ImFwazpmMTM3ZWU1NC1lY2U0LTQzYWYtYTgwNi00MTkxMmJkNTk5NmIifQ." +
-            "12Hbb-ySwXrbZE7TlwhmuZpIKuH0l97Hct713Wm4P6BBZKz2T2ZEpHvbZDGMNys3-DGgPtk5cp5zMAczolHrw7SAQpd" +
-            "wRZAgAnY6JDn770e4XSsSzx3Jr_6ORn8-NfqEGsP9vObXI3KdEoQ5M6BcN0OOlTBkGgmHNNzE5pJ2x00WA3GBFoqLx4" +
-            "YyHW3AlqfCHGrnLE08swEpcU2QozY_yQjEhdFa2VRLAwgetubldob6sNqKtCu9SSVfzoXrvbJCiayMekjkWh2GnP5BBmd" +
-            "ZPiRoiy9xry3qJWJJemVzrj85etenLYMCimvWJ6PAOGWVERSbaWARf6TUkP3cOnTKSw";
+    private final static String AUTH_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI4YTFlZGFlOC1hZDMwLTRlNGItYWM4OC0zOTg5YjFkYjc3ZjYiLCJleHAiOjE1NzM0MTU1MDksImlhdCI6MTU3MzQwODMwOSwiaXNzIjoiYmlmcm9zdCIsInN1YiI6ImFwazpmMTM3ZWU1NC1lY2U0LTQzYWYtYTgwNi00MTkxMmJkNTk5NmIifQ.eaVcchvLnQCMTcZqTXiwdwxMoMMCMQUygeRPj5GalNpV9v6WnyUIhSEmWuf5y8utyZAPSP4_PuX7EI98GUp1Du7tbgE1pJnLiImv8sc0_gY_W5Hda-XGiQS-VjqnT9oDvJYKozjOPwzSuGfBnSMe6dDvPxGr-CZNJbYOALsRAXuX3J4gB5kBA6wH8W6maP0hYe5HwaZzYM2hqD4jvY0ogxWel1pjQWwySa-zDaWXeef-7wpt6TRRIMBzF0EmdxYf5fgXd8Q8xVPaAduef4V6YFBYHL1twume3-I708OygSea3W21GUjjvi0GcMtiGMnn5VDJvyZ2Gx3aLEUwrpgPgw";
 
     private WebServiceManager() {}
 
