@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.ualr.networking">
-    <!-- TODO 02.  Add internet permission to the project -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- TODO 07. Change the name property of the application element in the manifest -->
     <application
         android:name=".NetworkApp"
         android:allowBackup="true"

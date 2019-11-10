@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by irconde on 2019-10-25.
  */
-// TODO 04. Define a Book class used as model of the app architecture
 public class Book {
     @SerializedName("author")
     @Expose
