@@ -1,11 +1,15 @@
 package edu.ualr.networking.repository;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import edu.ualr.networking.NetworkApp;
+import edu.ualr.networking.db.BooksDAO;
+import edu.ualr.networking.db.BooksDB;
 import edu.ualr.networking.model.Book;
 import edu.ualr.networking.network.WebServiceManager;
 import edu.ualr.networking.network.WebAPI;
@@ -17,40 +21,38 @@ import retrofit2.Response;
  * Created by irconde on 2019-10-25.
  */
 
-// TODO 10. We create a Repository class to provide just an abstraction for data access.
 public class Repository {
 
     private static final String TAG = Repository.class.getSimpleName();
-    // TODO 12. We add a LiveData member. It's used to inform the ViewModel when we receive data
-    //  from the server
     private MutableLiveData<List<Book>> bookListObservable = new MutableLiveData<>();
-    // TODO 11. Reference to the Web API client
     private WebAPI bookAPI;
+    // TODO 05. We add a new DAO member to manage data in the database
+    private BooksDAO bookDAO;
 
-    // TODO 14. We define the constructor of the class. We get a reference to the Web API client
     public Repository() {
         bookAPI = WebServiceManager.getService();
+        // TODO 06. We get a reference to the DAO
+        bookDAO = BooksDB.getInstance(NetworkApp.getContext()).getBooksDAO();
     }
 
-    // TODO 15. We define a method to allow other components of the app fetch data from the repository
     public void fetchData() {
-        // TODO 16. We define a method to fetch books data from web service
+        loadAllBooksFromDB();
+        // TODO 08. Get books stored in the database
         getBooksFromWeb();
     }
 
-    // TODO 13. We define a get method for the bookListObservable member
     public MutableLiveData<List<Book>> getBookListObservable() {
         return bookListObservable;
     }
 
-    // TODO 16. We define a method to fetch books data from web service. We update the
     private void getBooksFromWeb(){
         bookAPI.getBooksFromWeb().enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful()) {
-                    // TODO 17. We update the list of books in case we receive a successful response
-                    setBooksListObservableData(response.body());
+                    //setBooksListObservableData(response.body());
+                    // TODO 09. Modify the getBooksFromWeb method. When we get a response from the server we'll add the new received books to the database
+                    addBooksToDB(response.body());
                 } else {
                     switch (response.code()) {
                         case 404:
@@ -72,32 +74,76 @@ public class Repository {
         });
     }
 
+    // TODO 10. Define a method to insert new books in the database using the corresponding method of the defined DAO
+    private void addBooksToDB(List<Book> books) {
+        new AsyncTask<List<Book>, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(List<Book>... params) {
+                boolean needsUpdate = false;
+                for (Book item : params[0]) {
+                    Long inserted = bookDAO.insertEntry(item); //-1 if not inserted
+                    if (inserted == -1){
+                        int updated = bookDAO.update(item);
+                        if (updated > 0){
+                            needsUpdate = true;
+                        }
+                    }else{
+                        needsUpdate = true;
+                    }
+
+                }
+                return needsUpdate;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean needUpdate) {
+                if (needUpdate) {
+                    loadAllBooksFromDB();
+                }
+            }
+        }.execute(books);
+    }
+
+    // TODO 07. Define a method to get the list of books stored in the database using the corresponding method of the defined DAO
+    private void loadAllBooksFromDB() {
+        new AsyncTask<Void, Void, List<Book>>() {
+            @Override
+            protected List<Book> doInBackground(Void...a) {
+                return bookDAO.getAllEntries();
+            }
+
+            @Override
+            protected void onPostExecute(List<Book> results) {
+                //check if there are data in the db
+                if ((results != null)&&results.size()>0) {
+                    setBooksListObservableData(results);
+                }
+            }
+        }.execute();
+    }
+
     /**
      * This method changes the observable's LiveData data without changing the status
      * @param bookList the data that need to be updated
      */
-    // TODO 17. We update the list of books in case we receive a successful response
     private void setBooksListObservableData(List<Book> bookList) {
         bookListObservable.setValue(bookList);
     }
 
-    // TODO 19. We update the list of books once we make sure the transaction has
-    //  been successful and we receive the resulting list of books.
     private void addBooksToListObservableData(List<Book> bookList) {
         List<Book> books = bookListObservable.getValue();
         books.addAll(bookList);
         bookListObservable.setValue(books);
     }
 
-    // TODO 18. We define a method to send the web server a request to remotely add/save a new book.
+    // TODO 11. Modify the method saveData. We want to store new book in the database once it has been stored in the remote database
     public void saveData(Book book) {
         bookAPI.saveBookInWeb(book).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful()) {
-                    // TODO 19. We update the list of books once we make sure the transaction has
-                    //  been successful and we receive the resulting list of books.
-                    addBooksToListObservableData(response.body());
+                    //addBooksToListObservableData(response.body());
+                    addBooksToDB(response.body());
                 } else {
                     switch (response.code()) {
                         case 404:

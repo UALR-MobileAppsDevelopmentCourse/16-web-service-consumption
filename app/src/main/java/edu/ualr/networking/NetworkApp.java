@@ -16,7 +16,6 @@ public class NetworkApp extends Application {
         instance = this;
     }
 
-
     public static NetworkApp getInstance() {
         return instance;
     }
