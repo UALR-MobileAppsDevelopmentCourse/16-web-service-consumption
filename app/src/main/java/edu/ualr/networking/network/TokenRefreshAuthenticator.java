@@ -23,7 +23,7 @@ public class TokenRefreshAuthenticator implements Authenticator {
         this.session = session;
     }
 
-    // TODO 03. ... it has to override the authenticate method. It's automatically code when the Okhttp client
+    // TODO 03. ... it has to override the authenticate method. It's automatically invoked when the Okhttp client
     // receives an error from the server related to authentication and retries the petition to the server
     @Override
     public Request authenticate(Route route, Response response) throws IOException {

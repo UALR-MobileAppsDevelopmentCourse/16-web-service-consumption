@@ -25,7 +25,7 @@ public class WebServiceManager {
             Session session = new Session();
             OkHttpClient httpClient = new OkHttpClient.Builder()
                     .addInterceptor(new AuthenticationInterceptor(session))
-                    // TODO 01. The mail goal is create a new class in charge of refreshing the
+                    // TODO 01. The main goal is create a new class in charge of refreshing the
                     //  authorization token once it has expired. TokenRefreshAuthenticator
                     .authenticator(new TokenRefreshAuthenticator(apiServiceHolder,session))
                     .addInterceptor(loggingInterceptor)
