@@ -21,6 +21,8 @@ public class WebServiceManager {
 
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
+            // TODO 01. The mail goal is create a new class in charge of refreshing the
+            //  authorization token once it has expired. TokenRefreshAuthenticator
             OkHttpClient httpClient = new OkHttpClient.Builder()
                     .addInterceptor(new AuthenticationInterceptor(AUTH_TOKEN))
                     .addInterceptor(loggingInterceptor)
