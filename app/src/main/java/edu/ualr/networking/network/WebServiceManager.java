@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by irconde on 2019-10-25.
  */
 
-// TODO 05. We create the WebServiceManager class tha will be responsible for creating a new instance
+// TODO 05. We create the WebServiceManager class that will be responsible for creating a new instance
 //  of the API client
 
 public class WebServiceManager {

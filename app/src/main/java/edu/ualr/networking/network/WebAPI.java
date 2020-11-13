@@ -11,14 +11,14 @@ import retrofit2.http.POST;
 /**
  * Created by irconde on 2019-10-25.
  */
-// TODO 03. We declare an API interface
+// TODO 04. We declare an API interface
 public interface WebAPI {
 
-    // TODO 03.01. Request with GET Http method. Get list of available books. Url: ds/books
+    // TODO 04.01. Request with GET Http method. Get list of available books. Url: ds/books
     @GET("ds/books")
     Call<List<Book>> getBooksFromWeb();
 
-    // TODO 03.02. Request with POST Http method. Save new book in the server. Url: ds/books
+    // TODO 04.02. Request with POST Http method. Save new book in the server. Url: ds/books
     @POST("ds/books")
     Call<List<Book>> saveBookInWeb(@Body Book book);
 
