@@ -27,16 +27,13 @@ public class Repository {
     private MutableLiveData<List<Book>> bookListObservable = new MutableLiveData<>();
     private WebAPI bookAPI;
     // TODO 05. We add a new DAO member to manage data in the database
-    private BooksDAO bookDAO;
 
     public Repository() {
         bookAPI = WebServiceManager.getService();
         // TODO 06. We get a reference to the DAO
-        bookDAO = BooksDB.getInstance(NetworkApp.getContext()).getBooksDAO();
     }
 
     public void fetchData() {
-        loadAllBooksFromDB();
         // TODO 08. Get books stored in the database
         getBooksFromWeb();
     }
@@ -50,9 +47,8 @@ public class Repository {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful()) {
-                    //setBooksListObservableData(response.body());
+                    setBooksListObservableData(response.body());
                     // TODO 09. Modify the getBooksFromWeb method. When we get a response from the server we'll add the new received books to the database
-                    addBooksToDB(response.body());
                 } else {
                     switch (response.code()) {
                         case 404:
@@ -76,50 +72,12 @@ public class Repository {
 
     // TODO 10. Define a method to insert new books in the database using the corresponding method of the defined DAO
     private void addBooksToDB(List<Book> books) {
-        new AsyncTask<List<Book>, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(List<Book>... params) {
-                boolean needsUpdate = false;
-                for (Book item : params[0]) {
-                    Long inserted = bookDAO.insertEntry(item); //-1 if not inserted
-                    if (inserted == -1){
-                        int updated = bookDAO.update(item);
-                        if (updated > 0){
-                            needsUpdate = true;
-                        }
-                    }else{
-                        needsUpdate = true;
-                    }
 
-                }
-                return needsUpdate;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean needUpdate) {
-                if (needUpdate) {
-                    loadAllBooksFromDB();
-                }
-            }
-        }.execute(books);
     }
 
     // TODO 07. Define a method to get the list of books stored in the database using the corresponding method of the defined DAO
     private void loadAllBooksFromDB() {
-        new AsyncTask<Void, Void, List<Book>>() {
-            @Override
-            protected List<Book> doInBackground(Void...a) {
-                return bookDAO.getAllEntries();
-            }
 
-            @Override
-            protected void onPostExecute(List<Book> results) {
-                //check if there are data in the db
-                if ((results != null)&&results.size()>0) {
-                    setBooksListObservableData(results);
-                }
-            }
-        }.execute();
     }
 
     /**
@@ -142,8 +100,7 @@ public class Repository {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful()) {
-                    //addBooksToListObservableData(response.body());
-                    addBooksToDB(response.body());
+                    addBooksToListObservableData(response.body());
                 } else {
                     switch (response.code()) {
                         case 404:

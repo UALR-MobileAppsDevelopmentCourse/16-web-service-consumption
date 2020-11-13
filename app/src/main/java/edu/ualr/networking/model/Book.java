@@ -1,8 +1,6 @@
 package edu.ualr.networking.model;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
  * Created by irconde on 2019-10-25.
  */
 // TODO 03. Modify the Book model to define a new database entity. Set the isbn field as the primary key
-@Entity
 public class Book {
     @SerializedName("author")
     @Expose
@@ -19,7 +16,6 @@ public class Book {
     @SerializedName("title")
     @Expose
     private String title;
-    @PrimaryKey
     @NonNull
     @SerializedName("isbn")
     @Expose
