@@ -41,7 +41,6 @@ public class FormFragment extends Fragment implements View.OnClickListener {
         saveBtn = view.findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(this);
         bookViewModel = ViewModelProviders.of(this.getActivity()).get(BookViewModel.class);
-        // TODO 29. Show a Toast message when a new book has been successfully saved in the server
         bookViewModel.getBookListObservable().observe(this, new Observer<List<Book>>() {
             @Override
             public void onChanged(List<Book> books) {
@@ -53,8 +52,7 @@ public class FormFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        // TODO 30. Save data regarding a new book in the repository
-        bookViewModel.saveData(new Book(
+                bookViewModel.saveData(new Book(
                 authorET.getText().toString(),
                 titleET.getText().toString(),
                 isbnET.getText().toString(),

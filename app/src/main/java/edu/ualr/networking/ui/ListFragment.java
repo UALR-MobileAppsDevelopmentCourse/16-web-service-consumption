@@ -39,14 +39,12 @@ public class ListFragment extends Fragment {
         mRecipesListView.setAdapter(mAdapter);
         mRecipesListView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         bookViewModel = ViewModelProviders.of(this.getActivity()).get(BookViewModel.class);
-        // TODO 32. Populate the view with the list of books when this gets updated
         bookViewModel.getBookListObservable().observe(this, new Observer<List<Book>>() {
             @Override
             public void onChanged(@Nullable List<Book> books) {
                 mAdapter.setItems(books);
             }
         });
-        // TODO 31. Try to retrieve data from the viewmodel
         bookViewModel.retrieveData();
         return view;
     }
